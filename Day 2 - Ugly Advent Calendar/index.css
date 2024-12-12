@@ -1,42 +1,41 @@
 body {
     font-family: 'Times New Roman', Times, serif;
-    background-color: red;
-  }
-  
-  h2 {
+    background-color: white;
+}
+
+h2 {
     margin: 20px;
-    color: darkred;
+    color: black !important;
     font-size: 24px;
     font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-  }
-  
-  h4 {
+}
+
+h4 {
     font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-  }
-  
-  .calendar-container {
+}
+
+.calendar-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); 
+    grid-template-columns: repeat(5, 1fr);
     gap: 2px;
     padding: 10px;
     max-width: 800px;
     margin: 0 auto;
-    background-color: tomato;
+    background-color: purple;
     border-radius: 20px;
-  }
-  
-  .calendar-box {
-    background-color: #ff0000;
-    color: #ff9999;
+}
+
+.calendar-box {
+    background-color: purple;
+    color: whitesmoke !important;
     font-size: 8px;
     text-align: left;
     padding: 2px;
     border: 1px dashed black;
-  }
-  
-  .calendar-box p {
+}
+
+.calendar-box p {
     margin: 0;
     text-align: center;
     font-size: 12px;
-  }
-  
+}
