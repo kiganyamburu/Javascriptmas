@@ -30,11 +30,20 @@ const listArr = [];
 
 // Function to check item is not duplicate
 function checkDuplicate() {
-  /* ⚠️ You need to add code to this function! ⚠️*/
+    /* ⚠️ You need to add code to this function! ⚠️*/
+    
 
-  const itemText = itemInput.value;
-  listArr.push(itemText);
-  renderList();
+    const itemText = itemInput.value.trim().replace(/\s+/, '');
+    const isDuplicate = listArr.some(existingItem =>
+        existingItem.trim().replace(/\s+/, ' ') === itemText);
+    
+    
+    if (!isDuplicate && itemText !== "") {
+        listArr.push(itemText);
+        renderList();
+    } else if (itemText !== "") {
+        alert("This item is already in the list!");
+    }
 }
 
 // Function to add an item to the shopping list
