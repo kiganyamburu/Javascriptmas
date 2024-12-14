@@ -73,5 +73,5 @@ function replaceDirectEmojis(phrase) {
         .join("");
     
     
-    console.log(replaceDirectEmojis("those shoes");)
+    console.log(replaceDirectEmojis("those shoes"));
 }
