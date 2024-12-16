@@ -23,6 +23,19 @@ let anagrams = [
     ["Is Car Thieves", "Christmas Eve"]
 ];
 
-function findAnagrams(array){
+function findAnagrams(array) {
     // write your code here
+    function normalize(str) {
+        return str.replace(/\s+/g, '')
+            .toLowerCase()
+            .split('')
+            .sort()
+            .join('');
+    }
+    return array.filter(pair => normalize(pair[0]) === normalize(pair[1]));
+
+
 }
+
+let validAnagrams = findAnagrams(anagrams);
+console.log(validAnagrams); 
