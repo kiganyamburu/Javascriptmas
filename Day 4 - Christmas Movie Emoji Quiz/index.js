@@ -1,37 +1,90 @@
-/*
-You are going to build an app that challenges players to identify a Christmas Movie from some emoji 🍿 🎅 🎬. The players will have 3 guesses per movie.
+import { films } from './data.js';
 
-For example, the emoji 🌇 💣 👮 ✈️ ️🔫  represent the film “Die Hard”, which everyone knows is the best Christmas movie of all time.
+// Get references to DOM elements
+const emojiContainer = document.querySelector('.emoji-clues-container');
+const guessInput = document.querySelector('#guess-input');
+const messageContainer = document.querySelector('.message-container');
+const form = document.querySelector('form');
 
-In data.js you have an array of Christmas movies with emoji and text for aria labels.
+let currentFilmIndex = -1;
+let guessesRemaining = 3;
+let usedFilms = new Set();
 
-Your task is to build an app that meets these criteria:
+// Shuffle the films array to randomize order
+const shuffledFilms = [...films].sort(() => Math.random() - 0.5);
 
-- The app should present the player with a set of emoji selected at random from the array in data.js. 
+// Helper to display emoji and set aria-label
+function displayEmoji(film) {
+    emojiContainer.innerHTML = film.emoji.join(' ');
+    emojiContainer.setAttribute('aria-label', film.ariaLabel);
+}
 
-- The player will input their guess.
+// Helper to display a message
+function displayMessage(message) {
+    messageContainer.textContent = message;
+}
 
-- If the player guesses correctly, the app should display a message saying "Correct!". Then, after a pause of 3 seconds, it should randomly select the next set of emoji clues and display them to the player.
+// Helper to get the next film
+function getNextFilm() {
+    currentFilmIndex++;
+    if (currentFilmIndex < shuffledFilms.length) {
+        return shuffledFilms[currentFilmIndex];
+    } else {
+        return null; // No more films
+    }
+}
 
-- If the player’s guess is incorrect, the app should display a message saying “Incorrect! You have 2 more guesses remaining.”
+// Reset the game state for the next question
+function resetGameForNextFilm() {
+    guessesRemaining = 3;
+    const nextFilm = getNextFilm();
 
-- If the player fails to guess correctly on the next two attempts, the app should display a message saying, `The film was <Film Name Here>!`. After a pause of 3 seconds, it should randomly select a new set of emoji clues and display them to the player.
+    if (nextFilm) {
+        displayEmoji(nextFilm);
+        displayMessage(`You have ${guessesRemaining} guesses remaining.`);
+        guessInput.querySelector('input').value = '';
+    } else {
+        displayMessage("That's all folks!");
+        guessInput.querySelector('input').disabled = true;
+        guessInput.querySelector('button').disabled = true;
+    }
+}
 
-- When all films in the array have been used, the player should see a message saying "That's all folks!".
+// Check the player's guess
+function checkGuess(event) {
+    event.preventDefault();
+    const userGuess = guessInput.querySelector('input').value.trim().toLowerCase();
+    const currentFilm = shuffledFilms[currentFilmIndex];
 
-- Each film should only be used once. There should be no repetition. 
+    if (!currentFilm) return;
 
+    if (userGuess === currentFilm.title.toLowerCase()) {
+        displayMessage('Correct!');
+        setTimeout(resetGameForNextFilm, 3000);
+    } else {
+        guessesRemaining--;
+        if (guessesRemaining > 0) {
+            displayMessage(`Incorrect! You have ${guessesRemaining} more guesses remaining.`);
+        } else {
+            displayMessage(`The film was ${currentFilm.title}!`);
+            setTimeout(resetGameForNextFilm, 3000);
+        }
+    }
+}
 
-Stretch Goals
+// Initialize the game
+function initializeGame() {
+    const firstFilm = getNextFilm();
+    if (firstFilm) {
+        displayEmoji(firstFilm);
+        displayMessage(`You have ${guessesRemaining} guesses remaining.`);
+    } else {
+        displayMessage("That's all folks!");
+    }
+}
 
-- Use AI to decide if an answer is correct or incorrect. For example if the correct answer is "The Polar Express" but the player inputs "Polar Express" a straight comparison of the two strings will find that the player's answer was incorrect. AI could assess if there is sufficient similarity between the strings to judge it as correct. 
+// Attach event listener to the form
+form.addEventListener('submit', checkGuess);
 
-- Improve the UX by disabling the form/button when the game is over and during the pause between questions.
-*/
-
-import { films } from '/data.js'
-
-// Some useful elements
-const guessInput = document.getElementById('guess-input')
-const messageContainer = document.getElementsByClassName('message-container')[0]
-const emojiCluesContainer = document.getElementsByClassName('emoji-clues-container')[0]
+// Start the game
+initializeGame();
