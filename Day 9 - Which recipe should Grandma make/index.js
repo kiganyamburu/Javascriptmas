@@ -51,14 +51,20 @@ const guest = {
   
   // Requirements for a suitable recipe
   // 1: Contains at least one ingredient Alice likes
-  // 2: Contains zero ingredients that Alice dislikes
+// 2: Contains zero ingredients that Alice dislikes
   
-  // Step 1: Filter recipes based on Alice's preferences
-  
-  
-  
-  
-  
-  
-  // Step 2: Output the suitable recipes
-  
+// Step 1: Filter recipes based on Alice's preferences
+const suitableRecipes = recipes.filter(recipe => {
+    const hasLikedIngredient = recipe.ingredients.some(ingredient => guest.loves.includes(ingredient));
+    const hasDislikedIngredient = recipe.ingredients.some(ingredient => guest.dislikes.includes(ingredient));
+    return hasLikedIngredient && !hasDislikedIngredient;
+});
+
+// Step 2: Output the suitable recipes
+
+if (suitableRecipes.length > 0) {
+    console.log("Suitable recipes for Alice:");
+    suitableRecipes.forEach(recipe => console.log(`- ${recipe.name}`));
+} else {
+    console.log("No suitable recipes found for Alice.");
+}
