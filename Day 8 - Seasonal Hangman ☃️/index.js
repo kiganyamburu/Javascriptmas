@@ -5,6 +5,14 @@ document.getElementById('keyboard-container').addEventListener('click', checkGue
 // Some useful elements
 const guessContainer = document.getElementById('guess-container')
 const snowmanParts = document.getElementsByClassName('snowman-part')
+const sunglasses = document.querySelector('.sunglasses');
+const puddle = document.querySelector('.puddle');
+const keyboardContainer = document.getElementById('keyboard-container');
+
+const words = ["gift", "snow", "winter", "christmas", "holiday"]; // Array of words
+let word; // Declare word without initializing
+let guesses = 6;
+let guessedLetters = [];
 
 /*
 Challenge  
@@ -28,14 +36,64 @@ Challenge
 - Add a "New Game" button that appears at the end of a game and resets the app. (You will need to create an array of words to guess)
 */
 
-// Set the word to guess
-const word = "gift"
-// 6 guesses for the 6 parts of the snowman
-let guesses = 6
 
-
-function checkGuess() {
-    
+function initializeGame() {
+    word = words[Math.floor(Math.random() * words.length)];
+    guesses = 6;
+    guessedLetters = [];
+    guessContainer.innerHTML = "";
+    sunglasses.style.visibility = "hidden";
+    puddle.style.display = "none";
+    for (let part of snowmanParts) {
+        part.style.display = "block";
+    }
+    for (let button of keyboardContainer.querySelectorAll('button')) {
+        button.disabled = false;
+    }
+    renderWordDisplay();
 }
 
+function renderWordDisplay() {
+    guessContainer.innerHTML = "";
+    for (let letter of word) {
+        if (guessedLetters.includes(letter)) {
+            guessContainer.innerHTML += `<span class="guess-char">${letter}</span>`;
+        } else {
+            guessContainer.innerHTML += `<span class="guess-char">_</span>`;
+        }
+    }
+}
+
+function checkGuess(event) {
+    if (event.target.tagName !== 'BUTTON') return;
+
+    const letter = event.target.textContent.toLowerCase();
+    event.target.disabled = true; // Disable the button
+
+    if (word.includes(letter)) {
+        guessedLetters.push(letter);
+        renderWordDisplay();
+        if (!Array.from(word).some(char => !guessedLetters.includes(char))) { //Check if all letters are guessed
+            sunglasses.style.visibility = "visible";
+            guessContainer.textContent = "You Win!";
+            const newGameButton = document.createElement('button');
+            newGameButton.textContent = "New Game";
+            newGameButton.addEventListener('click', initializeGame);
+            guessContainer.appendChild(newGameButton);
+        }
+    } else {
+        guesses--;
+        snowmanParts[guesses].style.display = "none";
+        if (guesses === 0) {
+            puddle.style.display = "block";
+            guessContainer.textContent = "You Lose! The word was " + word;
+            const newGameButton = document.createElement('button');
+            newGameButton.textContent = "New Game";
+            newGameButton.addEventListener('click', initializeGame);
+            guessContainer.appendChild(newGameButton);
+        }
+    }
+}
+
+initializeGame(); 
 renderKeyboard()
