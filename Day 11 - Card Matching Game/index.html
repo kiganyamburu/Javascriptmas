@@ -1,0 +1,51 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Pair</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        }
+        #game-board {
+        display: grid;
+        grid-template-columns: repeat(4, 100px);
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+        }
+        .card {
+        width: 100px;
+        height: 100px;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ddd;
+        cursor: pointer;
+        border-radius: 8px;
+        user-select: none;
+        }
+        .hidden {
+        background-color: #333;
+        color: #333;
+        }
+        .matched {
+        background-color: #0f0;
+        color: #0f0;
+        }
+        #restart {
+        margin-top: 20px;
+        display: none;
+        }
+    </style>
+    </head>
+    <body>
+    <h1>🎄 Find the Pair 🎁</h1>
+    <div id="game-board"></div>
+    <button id="restart">Restart Game</button>
+    <script src="game.js"></script>
+    </body>
+    </html>
