@@ -17,4 +17,74 @@ Stretch Goals for dedicated Social Media Engineers
 - Add left and right arrow overlays to the image so users can scroll back and forth.
 */
 
-import { feedData } from './data.js'
+import { feedData } from './data.js';
+
+const avatarContainer = document.querySelector('.avatars');
+const imageContainer = document.querySelector('.image-container');
+const messageContainer = document.querySelector('.message-container');
+const loadingAnimation = document.querySelector('.loading-animation');
+
+function createAvatar(friend) {
+  const avatar = document.createElement('div');
+  avatar.classList.add('avatar');
+  avatar.style.backgroundImage = `url(${friend.avatar})`;
+  return avatar;
+}
+
+function displayAvatars() {
+  avatarContainer.innerHTML = '';
+  feedData.forEach(friend => {
+    const avatar = createAvatar(friend);
+    avatarContainer.appendChild(avatar);
+  });
+}
+
+function displayImage(friendIndex) {
+  imageContainer.innerHTML = '';
+  const friend = feedData[friendIndex];
+  const image = document.createElement('img');
+  image.src = friend.images[0];
+  image.alt = `${friend.name}'s Image`; 
+  imageContainer.appendChild(image);
+}
+
+function cycleThroughImages() {
+  let currentFriendIndex = 0;
+  const intervalId = setInterval(() => {
+    // Highlight current friend's avatar
+    const avatars = avatarContainer.querySelectorAll('.avatar');
+    avatars.forEach(avatar => avatar.style.border = '2px solid white');
+    avatars[currentFriendIndex].style.border = '2px solid red';
+
+    // Display image
+    loadingAnimation.style.display = 'block';
+    setTimeout(() => {
+      loadingAnimation.style.display = 'none';
+      displayImage(currentFriendIndex);
+    }, 1000); // Simulated loading time
+
+    currentFriendIndex = (currentFriendIndex + 1) % feedData.length; 
+
+    if (currentFriendIndex === 0) {
+      clearInterval(intervalId);
+      messageContainer.style.display = 'block'; 
+    }
+  }, 1500); 
+}
+
+displayAvatars();
+cycleThroughImages(); 
+
+// Stretch Goal: Refactor with Generator
+/*
+function* imageCycler() {
+  let currentFriendIndex = 0;
+  while (true) {
+    yield currentFriendIndex;
+    currentFriendIndex = (currentFriendIndex + 1) % feedData.length;
+  }
+}
+
+const imageIterator = imageCycler();
+// ... use imageIterator.next().value in the interval 
+*/
