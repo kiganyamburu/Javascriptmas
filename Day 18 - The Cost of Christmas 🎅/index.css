@@ -5,6 +5,7 @@ html, body {
 
 body {
     
-    background-image: url('');
+    background-image: url('town.jpg');
+    background-size: cover;
    
 }
