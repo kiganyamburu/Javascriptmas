@@ -7,3 +7,9 @@ img {
     width: 200px;
 }
 
+body {
+    border-radius: pink solid 10px;
+    background-color: #f5f5f5;
+    
+    
+}
