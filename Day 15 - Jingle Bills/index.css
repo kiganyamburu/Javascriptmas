@@ -5,6 +5,8 @@
 body {
     border-radius: pink solid 10px;
     background-color: #f5f5f5;   
+    background-image: url("santa.jpg")
+    
 }
 .clause{
     height: 40%;
